@@ -1,0 +1,10 @@
+.preview{
+    width: 500px;
+    min-height: 290px;
+    margin-top: 15px;
+}
+
+.img_preview{
+    display: none;
+    width: 100%;
+}
