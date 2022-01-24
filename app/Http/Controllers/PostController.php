@@ -6,6 +6,7 @@ use App\Like;
 use App\Comment;
 use App\Profile;
 use App\Follower;
+use File;
 use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -122,19 +123,24 @@ class PostController extends Controller
     	]);
 
         if($request->image_url){
+            File::delete('image-upload/'.$post->image_url);
             $image = $request->image_url;
             $new_image = time() . ' - ' . $image->getClientOriginalName();
             $image->move('image-upload/', $new_image);
-        }else{
             $new_image = $post->image_url;
-        }
 
-        $post->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'image_url' => $new_image,
-            'user_id' => Auth::id()
-        ]);
+            $post->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'image_url' => $new_image,
+            ]);
+
+        }else{
+            $post->update([
+                'title' => $request->title,
+                'description' => $request->description,
+            ]);
+        }
  
     	return redirect('/all_post');
     }
